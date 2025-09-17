@@ -1,5 +1,7 @@
 package tenzor.soft.test.dto.dashboard;
 
-public record DelayedPMResponseDto() {
+public record DelayedPMResponseDto(
+        String pmName
+) {
 
 }

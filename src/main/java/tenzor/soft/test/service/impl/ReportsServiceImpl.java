@@ -3,9 +3,11 @@ package tenzor.soft.test.service.impl;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.server.ResponseStatusException;
 import tenzor.soft.test.dto.dashboard.*;
 import tenzor.soft.test.repository.ProjectsRepository;
 import tenzor.soft.test.service.ReportsService;
@@ -18,12 +20,15 @@ public class ReportsServiceImpl implements ReportsService {
     private final ProjectsRepository projectsRepository;
 
     @Override
-    public ResponseEntity<List<MonthlySalesRevenueResponseDto>> getRevenueResponse(Long year) {
+    public ResponseEntity<List<MonthlySalesRevenueDashboardResponseDto>> getRevenueResponse(Long year) {
         return ResponseEntity.ok(projectsRepository.getMonthlySalesRevenue(year));
     }
 
     @Override
     public ResponseEntity<RevenueByProjectTypeDashboardDto> getBusinessTypeDashboard(Long year) {
+        if (year < 2024 || year > 2026 ){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ONLY 2024-2025 is available");
+        }
         List<RevenueByProjectType> percentagesByProjectType = projectsRepository.getRevenuePercentagesByProjectType(year); //1
         List<SICategoryTopFourProjects> topFourSI = projectsRepository.getTopFourFromSICategory(year);//2
         List<SMCategoryTopFourProjects> topFourSM = projectsRepository.getTopFourFromSMCategory(year);//3
@@ -42,13 +47,15 @@ public class ReportsServiceImpl implements ReportsService {
 
     @Override
     public ResponseEntity<List<DelayedPMResponseDto>> getDelayedPMResponse(Long year) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDelayedPMResponse'");
+        return ResponseEntity.ok(projectsRepository.getHighestDelayedProjects(year));
     }
 
     @Override
-    public ResponseEntity<ProjectMonthlySalesDto> getProjectMonthlySales(Long projectId) {
-        return null;
+    public ResponseEntity<List<ProjectMonthlySalesDto>> getProjectMonthlySales(Long projectId) {
+        projectsRepository.findById(projectId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Project not found")
+        );
+        return ResponseEntity.ok(projectsRepository.getMonthlySalesByProject(projectId));
     }
 
 

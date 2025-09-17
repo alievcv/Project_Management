@@ -38,7 +38,7 @@ public interface ProjectsRepository extends JpaRepository<Project, Long> {
             GROUP BY TO_CHAR(from_date, 'Month'), EXTRACT(MONTH FROM from_date)
             ORDER BY EXTRACT(MONTH FROM from_date)
             """, nativeQuery = true)
-    List<MonthlySalesRevenueResponseDto> getMonthlySalesRevenue(@Param("year") Long year);
+    List<MonthlySalesRevenueDashboardResponseDto> getMonthlySalesRevenue(@Param("year") Long year);
 
     @Query(value = """
 
@@ -86,4 +86,20 @@ public interface ProjectsRepository extends JpaRepository<Project, Long> {
     
     """, nativeQuery = true)
     KeyPerformanceIndicatorResponseDto getKPIDashboard(@Param("year") Long year, @Param("goal") Long goal);
+
+
+
+
+
+    @Query(value = """
+        SELECT pmname as pm_name, actual_rate
+        from Project WHERE status == 'DELAYED' and EXTRACT(YEAR FROM from_date) = :year 
+        ORDER BY actual_rate DESC LIMIT 5
+    """, nativeQuery = true)
+    List<DelayedPMResponseDto> getHighestDelayedProjects(@Param("year") Long year);
+
+
+
+    @Query(value = "SELECT * FROM get_project_monthly_revenue(:id);", nativeQuery = true)
+    List<ProjectMonthlySalesDto> getMonthlySalesByProject(@Param("id") Long projectId);
 }

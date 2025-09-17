@@ -2,7 +2,7 @@ package tenzor.soft.test.dto.dashboard;
 
 
 
-public record MonthlySalesRevenueResponseDto(
+public record MonthlySalesRevenueDashboardResponseDto(
        String monthName,
        Long totalRevenue
 )

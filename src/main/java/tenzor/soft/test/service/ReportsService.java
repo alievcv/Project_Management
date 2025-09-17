@@ -7,7 +7,7 @@ import tenzor.soft.test.dto.dashboard.*;
 
 public interface ReportsService {
 
-    ResponseEntity<List<MonthlySalesRevenueResponseDto>> getRevenueResponse(Long year);
+    ResponseEntity<List<MonthlySalesRevenueDashboardResponseDto>> getRevenueResponse(Long year);
 
     ResponseEntity<RevenueByProjectTypeDashboardDto> getBusinessTypeDashboard(Long year);
 
@@ -15,5 +15,5 @@ public interface ReportsService {
 
     ResponseEntity<List<DelayedPMResponseDto>> getDelayedPMResponse(Long year);
 
-    ResponseEntity<ProjectMonthlySalesDto> getProjectMonthlySales(Long projectId);
+    ResponseEntity<List<ProjectMonthlySalesDto>> getProjectMonthlySales(Long projectId);
 }
