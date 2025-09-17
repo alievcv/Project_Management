@@ -2,17 +2,18 @@ package tenzor.soft.test.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import tenzor.soft.test.dto.dashboard.*;
 
 public interface ReportsService {
 
-    List<SalesRevenueResponseDto> getRevenueResponse(Integer year);
+    ResponseEntity<List<MonthlySalesRevenueResponseDto>> getRevenueResponse(Long year);
 
-    List<BusinessTypeResponseDto> getBusinessTypeDashboard(Integer year);
+    ResponseEntity<RevenueByProjectTypeDashboardDto> getBusinessTypeDashboard(Long year);
 
-    List<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Integer year);
+    ResponseEntity<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Long year);
 
-    List<DelayedPMResponseDto> getDelayedPMResponse(Integer year);
+    ResponseEntity<List<DelayedPMResponseDto>> getDelayedPMResponse(Long year);
 
-    ProjectMonthlySalesDto getProjectMonthlySales(Long projectId);
+    ResponseEntity<ProjectMonthlySalesDto> getProjectMonthlySales(Long projectId);
 }

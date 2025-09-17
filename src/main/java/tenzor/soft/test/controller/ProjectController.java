@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import tenzor.soft.test.dto.CreateProjectDto;
-import tenzor.soft.test.dto.ProjectDto;
+import tenzor.soft.test.dto.*;
 import lombok.RequiredArgsConstructor;
-import tenzor.soft.test.dto.UpdateProjectDto;
 import tenzor.soft.test.service.ProjectService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
@@ -24,6 +24,11 @@ public class ProjectController {
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(projectService.getListOfProjects(pageable));
+    }
+
+    @GetMapping("/byGroupedStatus")
+    public ResponseEntity<List<ProjectStatusCountDto>> listGroupedAndCountedByCategory(){
+        return projectService.getGroupedByProjectStatus();
     }
 
     @PostMapping("/create")

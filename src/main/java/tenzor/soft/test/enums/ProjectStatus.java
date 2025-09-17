@@ -5,6 +5,6 @@ public enum ProjectStatus {
     DELAYED,
     ON_GOING,
     PLANNED,
-    FINISHED
-
+    FINISHED,
+    TOTAL //for dashboard
 }
