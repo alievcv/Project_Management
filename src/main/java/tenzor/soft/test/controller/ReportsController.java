@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import tenzor.soft.test.dto.dashboard.KeyPerformanceIndicatorResponseDto;
 import tenzor.soft.test.dto.dashboard.RevenueByProjectType;
 import tenzor.soft.test.dto.dashboard.MonthlySalesRevenueResponseDto;
 import tenzor.soft.test.dto.dashboard.RevenueByProjectTypeDashboardDto;
@@ -30,6 +31,12 @@ public class ReportsController {
     @GetMapping("/byBusinessType")
     public ResponseEntity<RevenueByProjectTypeDashboardDto> getRevenueByBusinessType(@RequestParam Long year) {
         return reportsService.getBusinessTypeDashboard(year);
+    }
+
+    @GetMapping("/kpi")
+    public ResponseEntity<KeyPerformanceIndicatorResponseDto> getKpiDashboard(@RequestParam Long year, @RequestParam Long goal) {
+        return reportsService.getPerformanceIndicatorResponse(year, goal
+        );
     }
 
 

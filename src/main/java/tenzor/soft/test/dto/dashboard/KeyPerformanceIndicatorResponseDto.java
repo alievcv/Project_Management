@@ -2,7 +2,7 @@ package tenzor.soft.test.dto.dashboard;
 
 public record KeyPerformanceIndicatorResponseDto(
         Long totalRevenue,
-        Long annualGole,
+        Long annualGoal,
         Long achievedPercent,
         Long remainingRevenue
 ) {

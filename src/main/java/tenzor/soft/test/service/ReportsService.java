@@ -11,7 +11,7 @@ public interface ReportsService {
 
     ResponseEntity<RevenueByProjectTypeDashboardDto> getBusinessTypeDashboard(Long year);
 
-    ResponseEntity<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Long year);
+    ResponseEntity<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Long year, Long goal);
 
     ResponseEntity<List<DelayedPMResponseDto>> getDelayedPMResponse(Long year);
 

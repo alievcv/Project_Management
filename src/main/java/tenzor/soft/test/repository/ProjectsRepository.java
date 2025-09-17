@@ -77,13 +77,13 @@ public interface ProjectsRepository extends JpaRepository<Project, Long> {
     @Query(value = """
 
             SELECT
-        COALESCE(SUM(p.revenue),0) AS total_revenue,
+        COALESCE(SUM(p.revenue),0)::bigint AS total_revenue,
         :goal AS annual_goal,
-        ROUND( (COALESCE(SUM(p.revenue),0) / NULLIF(:goal,0)) * 100 ) AS achieved_percent,
-        (:goal - COALESCE(SUM(p.revenue),0)) AS remaining_revenue
+        ROUND( (COALESCE(SUM(p.revenue),0) / NULLIF(:goal,0)) * 100 )::bigint AS achieved_percent,
+        (:goal - COALESCE(SUM(p.revenue),0))::bigint AS remaining_revenue
     FROM project p
     WHERE EXTRACT(YEAR FROM p.from_date) = :year;
     
     """, nativeQuery = true)
-    KeyPerformanceIndicatorResponseDto getKPIDashboard(@Param("year") Long year);
+    KeyPerformanceIndicatorResponseDto getKPIDashboard(@Param("year") Long year, @Param("goal") Long goal);
 }

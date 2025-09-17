@@ -35,8 +35,8 @@ public class ReportsServiceImpl implements ReportsService {
     }
 
     @Override
-    public ResponseEntity<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Long year) {
-        return ResponseEntity.ok(projectsRepository.getKPIDashboard(year));
+    public ResponseEntity<KeyPerformanceIndicatorResponseDto> getPerformanceIndicatorResponse(Long year, Long goal) {
+        return ResponseEntity.ok(projectsRepository.getKPIDashboard(year, goal));
     }
 
 
