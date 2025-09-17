@@ -12,6 +12,7 @@ public class ProjectMapper {
         return new ProjectDto(
                 project.getId(),
                 project.getName(),
+                CategoryMapper.toDto(project.getCategory()),
                 project.getRevenue(),
                 project.getFromDate(),
                 project.getEndDate(),

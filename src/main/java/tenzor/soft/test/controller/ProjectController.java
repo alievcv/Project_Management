@@ -4,17 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import tenzor.soft.test.dto.CreateProjectDto;
 import tenzor.soft.test.dto.ProjectDto;
 import lombok.RequiredArgsConstructor;
+import tenzor.soft.test.dto.UpdateProjectDto;
 import tenzor.soft.test.service.ProjectService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/projects")
@@ -32,7 +28,17 @@ public class ProjectController {
 
     @PostMapping("/create")
     public ResponseEntity<ProjectDto> creeateProject(@RequestBody CreateProjectDto createProjectDto) {
-        return ResponseEntity.ok(projectService.createProject(createProjectDto));
+        return projectService.createProject(createProjectDto);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ProjectDto> updateProject(@RequestBody UpdateProjectDto updProjectDto) {
+        return projectService.updateProject(updProjectDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteProject(@PathVariable Long id) {
+        return projectService.deleteProject(id);
     }
 
 }

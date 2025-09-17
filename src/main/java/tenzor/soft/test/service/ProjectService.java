@@ -1,5 +1,6 @@
 package tenzor.soft.test.service;
 
+import org.springframework.http.ResponseEntity;
 import tenzor.soft.test.dto.CreateProjectDto;
 import tenzor.soft.test.dto.ProjectDto;
 import tenzor.soft.test.dto.UpdateProjectDto;
@@ -11,10 +12,10 @@ public interface ProjectService {
 
     Page<ProjectDto> getListOfProjects(Pageable pageable);
 
-    ProjectDto createProject(CreateProjectDto createProjectResponse);
+    ResponseEntity<ProjectDto> createProject(CreateProjectDto createProjectResponse);
 
-    ProjectDto updateProject(UpdateProjectDto updateProjectDto);
+    ResponseEntity<ProjectDto> updateProject(UpdateProjectDto updateProjectDto);
 
-    void deleteProject(Long id);
+    String deleteProject(Long id);
 
 }

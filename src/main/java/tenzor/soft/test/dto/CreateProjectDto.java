@@ -5,12 +5,12 @@ import java.util.Locale.Category;
 
 public record CreateProjectDto(
 
-        String projectName,
-        CategoryDto projectCategory,
-        Integer salesRevenue,
+        String name,
+        CategoryDto categoryDto,
+        Integer revenue,
         LocalDate fromDate,
         LocalDate endDate,
-        Integer workdays,
+        Integer remainingDays,
         String PMName
 
 ) {

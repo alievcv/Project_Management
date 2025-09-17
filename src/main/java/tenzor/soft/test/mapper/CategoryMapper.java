@@ -6,7 +6,7 @@ import tenzor.soft.test.entity.Category;
 public class CategoryMapper {
 
     public static CategoryDto toDto(Category category) {
-        return new CategoryDto(category.getId(), category.getName());
+        return new CategoryDto(category.getName());
     }
 
 }
