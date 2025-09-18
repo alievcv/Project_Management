@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:17
+    container_name: mypostgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: subhanalloh7777alhamdulillah
+      POSTGRES_DB: project_management_db
+    ports:
+      - "5432:5432" # optional if you want to connect from host tools
+    volumes:
+      - dbdata:/var/lib/postgresql/project_management
+
+  app:
+    build: .
+    container_name: project_management
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://project_management_db:5432/project_management
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: subhanalloh7777alhamdulillah
+    ports:
+      - "8084:8084"
+
+volumes:
+  dbdata:
