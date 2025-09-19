@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface ProjectService {
 
+    ResponseEntity<List<ProjectDto>> searchByNameContainingIgnoreCase(String name);
+
+    Page<ProjectDto> filter(String name, String type, String status, Pageable pageable);
+
     ResponseEntity<List<ProjectStatusCountDto>> getGroupedByProjectStatus();
 
     Page<ProjectDto> getListOfProjects(Pageable pageable);

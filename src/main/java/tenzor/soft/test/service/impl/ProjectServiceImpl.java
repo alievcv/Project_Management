@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,28 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectsRepository projectsRepository;
     private final CategoryRepository categoryRepository;
+    private final ProjectSpecifications projectSpecifications;
+
+    @Override
+    public ResponseEntity<List<ProjectDto>> searchByNameContainingIgnoreCase(String name) {
+        return ResponseEntity.ok(projectsRepository.findByNameContainingIgnoreCase(name));
+    }
+
+    @Override
+    public Page<ProjectDto> filter(String name, String type, String status, Pageable pageable) {
+        Specification<Project> spec = Specification
+                .where(ProjectSpecifications.nameContains(name))
+                .and(ProjectSpecifications.typeEquals(type))
+                .and(ProjectSpecifications.statusEquals(status));
+
+        return projectsRepository.findAll(spec, pageable).map(ProjectMapper::toDto);
+
+    }
 
     @Override
     public ResponseEntity<List<ProjectStatusCountDto>> getGroupedByProjectStatus() {
 
-        List<ProjectStatusCountDto>  projectStatusCountDtos = projectsRepository.countProjectsGroupedByStatus();
+        List<ProjectStatusCountDto> projectStatusCountDtos = projectsRepository.countProjectsGroupedByStatus();
         Long count = projectStatusCountDtos
                 .stream()
                 .distinct()
@@ -52,20 +70,21 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResponseEntity<ProjectDto> createProject(CreateProjectDto createProjectResponse) {
 
-        Integer overallDays = (int) (ChronoUnit.DAYS.between(createProjectResponse.fromDate(), createProjectResponse.endDate()));
+        Integer overallDays = (int) (ChronoUnit.DAYS.between(createProjectResponse.fromDate(),
+                createProjectResponse.endDate()));
         System.out.println("Overall days: " + overallDays);
         Integer remainingDays;
         if (createProjectResponse.fromDate().isAfter(createProjectResponse.endDate()) ||
                 createProjectResponse.fromDate().isEqual(createProjectResponse.endDate())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The startDate cannot be after endDate or equal to it!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "The startDate cannot be after endDate or equal to it!");
         }
         if (createProjectResponse.endDate().isAfter(LocalDate.now())) {
-             remainingDays = (int) ChronoUnit.DAYS.between(LocalDate.now(), createProjectResponse.endDate());
-        }else {
+            remainingDays = (int) ChronoUnit.DAYS.between(LocalDate.now(), createProjectResponse.endDate());
+        } else {
             Random random = new Random();
             remainingDays = random.nextInt(overallDays + 1);
         }
-
 
         Integer plannedRate = Math.min((100 / overallDays) * (overallDays - remainingDays), 100);
 
@@ -91,8 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project oldProject = projectsRepository.findById(updateProjectDto.id())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "Project with the given ID not found: " + updateProjectDto.id()
-                ));
+                        "Project with the given ID not found: " + updateProjectDto.id()));
 
         Category category = categoryRepository.findByName(updateProjectDto.categoryDto().name());
 
@@ -113,8 +131,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public String deleteProject(Long id) {
         Project project = projectsRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project with the given ID not found: " + id)
-        );
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project with the given ID not found: " + id));
         projectsRepository.deleteById(id);
         return "SUCCESS!";
     }

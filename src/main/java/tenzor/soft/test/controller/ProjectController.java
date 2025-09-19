@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import tenzor.soft.test.service.ProjectService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/projects")
@@ -19,7 +21,23 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping
+    @GetMapping("/search")
+    public ResponseEntity<List<ProjectDto>> search(@RequestParam String name) {
+        return projectService.searchByNameContainingIgnoreCase(name);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ProjectDto>> filter(
+            @RequestParam String type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return null;
+
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<Page<ProjectDto>> listProjects(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -27,7 +45,7 @@ public class ProjectController {
     }
 
     @GetMapping("/byGroupedStatus")
-    public ResponseEntity<List<ProjectStatusCountDto>> listGroupedAndCountedByCategory(){
+    public ResponseEntity<List<ProjectStatusCountDto>> listGroupedAndCountedByCategory() {
         return projectService.getGroupedByProjectStatus();
     }
 

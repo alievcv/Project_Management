@@ -42,7 +42,6 @@ public class Project {
     private Integer actualRate;
 
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status; //delayed, ongoing, planned, finished
-
+    private ProjectStatus status; // new, delayed, ongoing, planned, finished, Total ----> for dashboard only
 
 }
